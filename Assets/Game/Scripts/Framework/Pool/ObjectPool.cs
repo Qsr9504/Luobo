@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ObjectPool{
+public class ObjectPool : Singleton<ObjectPool> {
 
     public string ResourceDir = "";
 
