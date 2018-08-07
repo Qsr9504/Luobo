@@ -24,15 +24,62 @@ public class Sound : Singleton<Sound>{
         get { return m_bgSound.volume; }
         set { m_bgSound.volume = value; }
     }
+
     //音效大小
     public float EffectVolume {
         get { return m_effectSound.volume; }
         set { m_effectSound.volume = value; }
     }
+
     //播放音乐
+    public void PlayBg(string audioName) {
+        //需要做一个同一个音乐文件传进来，不需要重新播放
+        //当前正在播放的音乐文件
+        string oldName;
+        if(m_bgSound.clip == null) {
+            oldName = "";
+        }
+        else {
+            oldName = m_bgSound.clip.name;
+        }
+
+        if(oldName != audioName) {
+            AudioClip clip = ProductClip(audioName);
+            //播放
+            if (clip != null) {
+                m_bgSound.clip = clip;
+                m_bgSound.Play();
+            }
+        }
+    }
 
     //停止音乐
+    public void StopBg() {
+        m_bgSound.Stop();
+        m_bgSound.clip = null;
+    }
 
-    //播放特效
+    //播放音效
+    public void PlayEffect(string audioName) {
+        //获取clip
+        AudioClip clip = ProductClip(audioName);
+        //播放
+        m_effectSound.PlayOneShot(clip);
+    }
 
+
+    //通过音频名称获取该音频clip
+    public AudioClip ProductClip(string audioName) {
+        //路径
+        string path;
+        if (string.IsNullOrEmpty(ResourceDir))
+            path = "";
+        else
+            path = ResourceDir + "/" + audioName;
+
+        //音频
+        AudioClip clip = Resources.Load<AudioClip>(path);
+
+        return clip;
+    }
 }
