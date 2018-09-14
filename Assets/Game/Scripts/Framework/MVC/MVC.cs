@@ -12,7 +12,7 @@ public static class MVC {
 
     //注册
     public static void RegisterModel(Model model) {
-        Models[model.name] = model;
+        Models[model.Name] = model;
     }
 
     public static void RegisterView(View view) {
@@ -46,7 +46,7 @@ public static class MVC {
             Type t = CommandMap[eventName];
             Controller controller = Activator.CreateInstance(t) as Controller;
             //控制器执行
-            controller.HandleEvent(eventName, data);
+            controller.Execute(data);
         }
 
         //视图响应事件
